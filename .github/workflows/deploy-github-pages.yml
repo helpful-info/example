@@ -154,8 +154,9 @@ jobs:
         if: env.REGIONS_SHEET_IDS == 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' || env.TXT_APP_NAME == '' || env.ENV_NAME == 'Example'
         run: |
           echo "### ⚠️ Configuration error" >> $GITHUB_STEP_SUMMARY
-          echo "- Set the appropriate Google Spreadsheet ID, instead of the default/placeholder-value: `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`" >> $GITHUB_STEP_SUMMARY
-          echo "- Set the appropriate App name (set in `TXT_APP_NAME`, or use the value: `Helpful \n Information`" >> $GITHUB_STEP_SUMMARY
+          echo "- Set the appropriate Google Spreadsheet ID, instead of the default/placeholder-value: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" >> $GITHUB_STEP_SUMMARY
+          echo "- Set the appropriate App name (set in 'TXT_APP_NAME', or use the value: 'Helpful \n Information'" >> $GITHUB_STEP_SUMMARY
+          echo "::error file=.github/workflows/deploy-github-pages.yml::Please change the ENV configuration to real-world values"
           echo "Please change the ENV configuration to real-world values." && exit 1
 
       - name: Checkout
