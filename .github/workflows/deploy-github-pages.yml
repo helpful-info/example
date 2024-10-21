@@ -151,13 +151,13 @@ jobs:
 
     steps:
       - name: Verify ENV configuration
-        if: env.REGIONS_SHEET_IDS == 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' || env.TXT_APP_NAME == '' || env.ENV_NAME == 'Example'
+        if: env.REGIONS_SHEET_IDS == 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' || env.ENV_NAME == 'Example'
         run: |
-          echo "### ⚠️ Configuration error" >> $GITHUB_STEP_SUMMARY
-          echo "- Set the appropriate Google Spreadsheet ID, instead of the default/placeholder-value: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" >> $GITHUB_STEP_SUMMARY
-          echo "- Set the appropriate App name (set in 'TXT_APP_NAME', or use the value: 'Helpful \n Information'" >> $GITHUB_STEP_SUMMARY
-          echo "::error file=.github/workflows/deploy-github-pages.yml::Please change the ENV configuration to real-world values"
-          echo "Please change the ENV configuration to real-world values." && exit 1
+          workflow_file=.github/workflows/deploy-github-pages.yml
+          line_number=$(grep -n "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" $workflow_file | cut -d: -f1 | head -n 1)
+          echo "### ⚠️ Missing Google Spreadsheet ID" >> $GITHUB_STEP_SUMMARY
+          echo "Set the appropriate Google Spreadsheet ID, instead of the default/placeholder-value: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" >> $GITHUB_STEP_SUMMARY
+          echo "::error file=$workflow_file,line=$line_number::Please change the ENV configuration to real-world values"
 
       - name: Checkout
         uses: actions/checkout@v4
