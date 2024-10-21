@@ -155,7 +155,7 @@ jobs:
         run: |
           echo "### ⚠️ Missing Google Spreadsheet ID" >> $GITHUB_STEP_SUMMARY
           echo "Set the appropriate Google Spreadsheet ID, instead of the default/placeholder-value: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" >> $GITHUB_STEP_SUMMARY
-          echo "Edit [.github/workflows/deploy-github-pages.yml](../../edit/main/.github/workflows/deploy-github-pages.yml) to fix.
+          echo "Edit [.github/workflows/deploy-github-pages.yml](../../edit/main/.github/workflows/deploy-github-pages.yml) to fix." >> $GITHUB_STEP_SUMMARY
           echo "::error file=.github/workflows/deploy-github-pages.yml::Please change the ENV configuration to real-world values"
 
       - name: Checkout
