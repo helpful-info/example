@@ -19,6 +19,10 @@ env:
   #   - Requires: NG_USE_Q_AND_A_SEARCH to be 'true'!
   #   - Requires: SEARCH_API to be set to the URL of the Search-API used. (See below; Set by default)
   NG_USE_SEARCH_VIA_API: 'true'
+  # URL of the HIA-Search-API. Start with 'https://'
+  SEARCH_API: '${{ vars.SEARCH_API }}'
+  # API-Key ONLY to update the search-index with local sheet-data. Ask the host of the HIA-Search API.
+  SEARCH_API_KEY: ''
   #
   # Enable Feedback-prompt on Sub-Category and Offer pages (set to 'true' / 'false')
   NG_USE_FEEDBACK_PROMPT: 'true'
@@ -204,7 +208,6 @@ jobs:
           # See all variables: https://github.com/rodekruis/helpful-information/blob/main/.env.example
           GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
           GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
-          SEARCH_API: ${{ vars.SEARCH_API }}
 
       - name: Add generic files
         run: 'cp -r ./public/. www/'
