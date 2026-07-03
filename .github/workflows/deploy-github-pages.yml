@@ -184,12 +184,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo PUBLIC_URL="$(gh api repos/"$GITHUB_REPOSITORY"/pages --jq '.html_url')" >> "$GITHUB_ENV"
+          public_url="$(gh api repos/"$GITHUB_REPOSITORY"/pages --jq '.html_url')"
+          echo "HIA_PUBLIC_URL=$public_url" >> "$GITHUB_ENV"
 
       - name: Show GitHub Pages URL
         run: |
-          echo "The public URL is: $PUBLIC_URL"
-          echo "OR The public URL is: ${{ env.PUBLIC_URL }}"
+          echo "The public URL is: $HIA_PUBLIC_URL"
 
       - name: Checkout
         uses: actions/checkout@v7
