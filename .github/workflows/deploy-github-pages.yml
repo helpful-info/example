@@ -15,6 +15,15 @@ env:
   # When using "Q&A"s, you can enable search: (set to 'true' / 'false')
   NG_USE_Q_AND_A_SEARCH: 'true'
   #
+  # (Optional) Search-feature via API
+  #   - Requires: NG_USE_Q_AND_A_SEARCH to be 'true'!
+  #   - Requires: SEARCH_API to be set to the URL of the Search-API used. (See below; Set by default)
+  NG_USE_SEARCH_VIA_API: 'true'
+  # URL of the HIA-Search-API. Start with 'https://'
+  SEARCH_API: '${{ vars.SEARCH_API }}'
+  # API-Key ONLY to update the search-index with local sheet-data. Ask the host of the HIA-Search API.
+  SEARCH_API_KEY: ''
+  #
   # Enable Feedback-prompt on Sub-Category and Offer pages (set to 'true' / 'false')
   NG_USE_FEEDBACK_PROMPT: 'true'
   #
@@ -118,6 +127,17 @@ env:
   REGIONS_SHEET_IDS: >-
     1op6Ouyxtwv4f8GAEAMSn5PVzcXtfZuftMiLYWsX0pbs,
     10SIJdAQSd6loqCyzwK409QS_01Fgp8P4aqoDO8iBvhY
+  #
+  # ###########################################################################
+  # Analytics/Monitoring:
+  # ###########################################################################
+  #
+  # Matomo;
+  MATOMO_CONNECTION_STRING: '${{ vars.MATOMO_CONNECTION_STRING }}'
+  # GoatCounter;
+  GOATCOUNTER_CONNECTION_STRING: '${{ vars.GOATCOUNTER_CONNECTION_STRING }}'
+  # Azure Monitor / ApplicationInsights;
+  AI_CONNECTION_STRING: '${{ vars.AI_CONNECTION_STRING }}'
 
 # #############################################################################
 #
@@ -158,6 +178,15 @@ jobs:
           echo "Edit [\`.github/workflows/deploy-github-pages.yml\`](../../edit/main/.github/workflows/deploy-github-pages.yml) to fix." >> $GITHUB_STEP_SUMMARY
           echo "::error file=.github/workflows/deploy-github-pages.yml::Please change the ENV configuration to real-world values" && exit 1
 
+      - name: Detect GitHub Pages URL
+        id: pages_info
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo PUBLIC_URL="$(gh api repos/"$GITHUB_REPOSITORY"/pages --jq '.html_url')" >> "$GITHUB_ENV"
+          echo "The public URL in use: $PUBLIC_URL"
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -186,12 +215,8 @@ jobs:
         run: 'npm run build:production -- --output-path=../www --base-href=/${GITHUB_REPOSITORY#*/}/'
         env:
           # See all variables: https://github.com/rodekruis/helpful-information/blob/main/.env.example
-          NG_PRODUCTION: 'true'
-          GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
+          GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
           GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
-          MATOMO_CONNECTION_STRING: ${{ vars.MATOMO_CONNECTION_STRING }}
-          GOATCOUNTER_CONNECTION_STRING: ${{ vars.GOATCOUNTER_CONNECTION_STRING }}
-          AI_CONNECTION_STRING: ${{ vars.AI_CONNECTION_STRING }}
 
       - name: Add generic files
         run: 'cp -r ./public/. www/'
@@ -200,15 +225,15 @@ jobs:
         run: 'cp www/index.html www/404.html'
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
         with:
           enablement: true
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: 'www'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
