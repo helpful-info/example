@@ -185,7 +185,11 @@ jobs:
         run: |
           set -euo pipefail
           echo PUBLIC_URL="$(gh api repos/"$GITHUB_REPOSITORY"/pages --jq '.html_url')" >> "$GITHUB_ENV"
-          echo "The public URL in use: $PUBLIC_URL"
+
+      - name: Show GitHub Pages URL
+        run: |
+          echo "The public URL is: $PUBLIC_URL"
+          echo "OR The public URL is: ${{ env.PUBLIC_URL }}"
 
       - name: Checkout
         uses: actions/checkout@v7
