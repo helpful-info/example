@@ -123,6 +123,17 @@ env:
   REGIONS_SHEET_IDS: >-
     1op6Ouyxtwv4f8GAEAMSn5PVzcXtfZuftMiLYWsX0pbs,
     10SIJdAQSd6loqCyzwK409QS_01Fgp8P4aqoDO8iBvhY
+  #
+  # ###########################################################################
+  # Analytics/Monitoring:
+  # ###########################################################################
+  #
+  # Matomo;
+  MATOMO_CONNECTION_STRING: '${{ vars.MATOMO_CONNECTION_STRING }}'
+  # GoatCounter;
+  GOATCOUNTER_CONNECTION_STRING: '${{ vars.GOATCOUNTER_CONNECTION_STRING }}'
+  # Azure Monitor / ApplicationInsights;
+  AI_CONNECTION_STRING: '${{ vars.AI_CONNECTION_STRING }}'
 
 # #############################################################################
 #
@@ -195,9 +206,6 @@ jobs:
           GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
           GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
           SEARCH_API: ${{ vars.SEARCH_API }}
-          MATOMO_CONNECTION_STRING: ${{ vars.MATOMO_CONNECTION_STRING }}
-          GOATCOUNTER_CONNECTION_STRING: ${{ vars.GOATCOUNTER_CONNECTION_STRING }}
-          AI_CONNECTION_STRING: ${{ vars.AI_CONNECTION_STRING }}
 
       - name: Add generic files
         run: 'cp -r ./public/. www/'
