@@ -223,7 +223,7 @@ jobs:
           GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
 
       - name: Move generated files
-        run: 'mv -r ./helpful-information/www ./'
+        run: 'mv ./helpful-information/www ./'
 
       - name: Add generic files
         run: 'cp -r ./public/. www/'
