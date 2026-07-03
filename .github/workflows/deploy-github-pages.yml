@@ -219,6 +219,7 @@ jobs:
         run: 'npm run build:production -- --output-path=../www --base-href=/${GITHUB_REPOSITORY#*/}/'
         env:
           # See all variables: https://github.com/rodekruis/helpful-information/blob/main/.env.example
+          NG_PRODUCTION: 'true'
           GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
           GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
 
