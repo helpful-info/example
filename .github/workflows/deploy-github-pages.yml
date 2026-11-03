@@ -202,7 +202,6 @@ jobs:
           GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
         with:
           publicURL: '${{ env.HIA_PUBLIC_URL_AUTO }}'
-          config: ${{ env }}
           envJson: ${{ toJSON(env) }}
 
       - name: Debug Build-action
