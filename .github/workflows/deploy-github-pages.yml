@@ -3,6 +3,9 @@ env:
   # FEATURES:
   # ###########################################################################
   #
+  # The full public URL that the HIA-instance will use (Should start with `https://`)
+  HIA_PUBLIC_URL: 'https://helpful-info.github.io/example/'
+  #
   # For offline support: (set to 'true' / 'false')
   NG_USE_SERVICE_WORKER: 'true'
   #
@@ -138,9 +141,6 @@ env:
   GOATCOUNTER_CONNECTION_STRING: '${{ vars.GOATCOUNTER_CONNECTION_STRING }}'
   # Azure Monitor / ApplicationInsights;
   AI_CONNECTION_STRING: '${{ vars.AI_CONNECTION_STRING }}'
-  #
-  #
-  GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
 
 # #############################################################################
 #
@@ -203,11 +203,10 @@ jobs:
           cache-dependency-path: 'package.json'
           cache: 'npm'
 
-      - name: Install local
-        run: 'npm install --no-save'
-
       - name: Build
         uses: helpful-info/build@main
+        env:
+          GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
         with:
           publicURL: '${{ env.HIA_PUBLIC_URL_AUTO }}'
           config: ${{ env }}
