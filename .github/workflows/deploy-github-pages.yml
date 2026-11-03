@@ -206,7 +206,7 @@ jobs:
 
       - name: Debug Build-action
         run: |
-          ls -la www/
+          ls -l --all --recursive www/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v6
