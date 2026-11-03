@@ -184,11 +184,11 @@ jobs:
         run: |
           set -euo pipefail
           public_url="$(gh api repos/"$GITHUB_REPOSITORY"/pages --jq '.html_url')"
-          echo "HIA_PUBLIC_URL=$public_url" >> "$GITHUB_ENV"
+          echo "HIA_PUBLIC_URL_AUTO=$public_url" >> "$GITHUB_ENV"
 
       - name: Show GitHub Pages URL
         run: |
-          echo "The public URL is: $HIA_PUBLIC_URL"
+          echo "The public URL is: $HIA_PUBLIC_URL_AUTO"
 
       - name: Checkout
         uses: actions/checkout@v7
@@ -203,33 +203,18 @@ jobs:
       - name: Install local
         run: 'npm install --no-save'
 
-      - name: Set-up helpful-information
-        run: 'mv node_modules/helpful-information ./'
-
-      - name: Install helpful-information
-        working-directory: 'helpful-information'
-        run: 'npm ci --no-fund --no-audit'
-        env:
-          HUSKY: 0
-
       - name: Build
-        working-directory: 'helpful-information'
-        # NOTE: When the instance will be run on a custom (sub-)domain, remove the `--base-href`-flag+value.
-        run: 'npm run build:production -- --base-href=/${GITHUB_REPOSITORY#*/}/'
+        uses: helpful-info/build@main
         env:
-          # See all variables: https://github.com/rodekruis/helpful-information/blob/main/.env.example
-          NG_PRODUCTION: 'true'
           GOOGLE_SHEETS_API_KEY: '${{ secrets.GOOGLE_SHEETS_API_KEY }}'
-          GOOGLE_SHEETS_API_URL: 'https://sheets.googleapis.com/v4/spreadsheets'
+        with:
+          publicURL: '${{ env.HIA_PUBLIC_URL_AUTO }}'
+          config: ${{ env }}
+          envJson: ${{ toJSON(env) }}
 
-      - name: Move generated files
-        run: 'mv ./helpful-information/www ./'
-
-      - name: Add generic files
-        run: 'cp -r ./public/. www/'
-
-      - name: Add 404.html
-        run: 'cp www/index.html www/404.html'
+      - name: Debug Build-action
+        run: |
+          ls -la www/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v6
